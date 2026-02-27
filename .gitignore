@@ -1,0 +1,10 @@
+# 排除虛擬環境
+blackwell_env/
+
+# 排除 VS Code 設定
+.vscode/
+blackwell_env/
+.venv/
+__pycache__/
+checkpoints/*.pth
+checkpoints/*.bin
