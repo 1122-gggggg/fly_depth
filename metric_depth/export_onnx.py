@@ -11,7 +11,7 @@ model_configs = {
 model = DepthAnythingV2(**model_configs['vitb'])
 
 # 3. 載入權重 (Base 版本 Metric 權重)
-ckpt_path = r"C:\Users\90607\Depth-Anything-V2\checkpoints\depth_anything_v2_metric_vkitti_vitb.pth"
+ckpt_path = r"/home/allen/fly_depth/checkpoints/depth_anything_v2_metric_hypersim_vitb.pth"
 if not os.path.exists(ckpt_path):
     print(f"❌ 找不到模型檔案: {ckpt_path}")
     exit()
@@ -21,13 +21,14 @@ model.load_state_dict(torch.load(ckpt_path, map_location='cpu'))
 model.eval()
 
 # 4. 準備虛擬輸入 
-# 解析度調整為 728 (必須是 14 的倍數)，這比 518 提供更細緻的障礙物邊界
-res = 728 
-dummy_input = torch.randn(1, 3, res, res)
+# ANAFI 串流為 720p (1280x720)，導出為 1288x728 以符合 14 的倍數要求
+res_w = 1288
+res_h = 728
+dummy_input = torch.randn(1, 3, res_h, res_w)
 
 # 5. 導出 ONNX
-onnx_path = "depth_anything_v2_vitb_728.onnx"
-print(f"📦 正在導出 ViT-B 到 ONNX (解析度: {res}x{res})...")
+onnx_path = f"depth_anything_v2_vitb_{res_w}x{res_h}.onnx"
+print(f"📦 正在導出 ViT-B 到 ONNX (解析度: {res_w}x{res_h})...")
 
 torch.onnx.export(
     model, 

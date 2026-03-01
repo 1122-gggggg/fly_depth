@@ -5,6 +5,10 @@ blackwell_env/
 .vscode/
 blackwell_env/
 .venv/
+fly/
 __pycache__/
 checkpoints/*.pth
 checkpoints/*.bin
+*.engine
+*.deb
+wheels/
